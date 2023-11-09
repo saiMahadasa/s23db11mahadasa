@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  each costume in results
+    .costume
+      h2= costume.costume_type
+      p Size is: #{costume.size}, Cost is : #{costume.cost}

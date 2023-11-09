@@ -1,9 +1,8 @@
 var express = require('express');
+const aeroplane_controlers = require('../controllers/aeroplane');
 var router = express.Router();
 
-
-router.get('/', function(req, res, next) {
-  res.render('aeroplane', { title: 'Search Results - Aeroplanes.' });
-});
+/* GET costumes */
+router.get('/', aeroplane_controlers.aeroplane_view_all_Page);
 
 module.exports = router;

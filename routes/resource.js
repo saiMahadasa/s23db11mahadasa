@@ -5,16 +5,20 @@ var router = express.Router();
 
 // Require controller modules.
 var api_controller = require('../controllers/api');
-var costume_controller = require('../controllers/costume');
+var aeroplane_controller = require('../controllers/aeroplane');
+
 
 // API ROUTE
 router.get('/', api_controller.api);
 
 // COSTUME ROUTES
-router.post('/costumes', costume_controller.costume_create_post);
-router.delete('/costumes/:id', costume_controller.costume_delete);
-router.put('/costumes/:id', costume_controller.costume_update_put);
-router.get('/costumes/:id', costume_controller.costume_detail);
-router.get('/costumes', costume_controller.costume_list);
+router.post('/aeroplane', aeroplane_controller.aeroplane_create_post);
+router.delete('/aeroplane/:id', aeroplane_controller.aeroplane_delete);
+router.put('/aeroplane/:id', aeroplane_controller.aeroplane_update_put);
+router.get('/aeroplane/:id', aeroplane_controller.aeroplane_detail);
+ router.get('/aeroplane', aeroplane_controller.aeroplane_list);
+//  router.post('/costumes', costume_controllers.costume_create_post);
+
+
 
 module.exports = router;

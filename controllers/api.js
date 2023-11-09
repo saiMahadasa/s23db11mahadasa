@@ -5,7 +5,7 @@ exports.api = function(req, res) {
     res.json({
       resources: [
         {
-          resource: 'costumes',
+          resource: 'aeroplane',
           verbs: ['GET', 'PUT', 'DELETE'],
         },
         // Add more resources here as needed
