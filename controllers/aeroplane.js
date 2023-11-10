@@ -36,9 +36,31 @@ exports.aeroplane_view_all_Page = async function(req, res) {
 // };
 
 // For a specific Costume
-exports.aeroplane_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: Costume detail: ' + req.params.id);
+// exports.aeroplane_detail = function(req, res) {
+//   res.send('NOT IMPLEMENTED: Costume detail: ' + req.params.id);
+// };
+
+
+exports.aeroplane_detail = async function(req, res) {
+  console.log("detail" + req.params.id); // Log the detail and the id parameter from the request.
+
+  try {
+      
+      const result = await Aeroplane.findById(req.params.id);
+
+      if (result) {
+         
+          res.send(result);
+      } else {
+          
+          res.status(404).send(`{"error": "Document for id ${req.params.id} not found"}`);
+      }
+  } catch (error) {
+      // If an error occurs during the database query, send a 500 status and an error message.
+      res.status(500).send(`{"error": "Internal Server Error"}`);
+  }
 };
+
 
 // Handle Costume create on POST
 // exports.costume_create_post = function(req, res) {
@@ -70,6 +92,31 @@ exports.aeroplane_delete = function(req, res) {
 };
 
 // Handle Costume update on PUT
-exports.aeroplane_update_put = function(req, res) {
-  res.send('NOT IMPLEMENTED: Costume update PUT ' + req.params.id);
+// exports.aeroplane_update_put = function(req, res) {
+//   res.send('NOT IMPLEMENTED: Costume update PUT ' + req.params.id);
+// };
+
+// Handle Costume update form on PUT.
+exports.aeroplane_update_put = async function(req, res) {
+  console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
+
+  try {
+      // Retrieve the current state of the object using findById.
+      let toUpdate = await Aeroplane.findById(req.params.id);
+      if (req.body.aeroplane_type) toUpdate.aeroplane_type = req.body.aeroplane_type;
+      if (req.body.cost) toUpdate.color = req.body.color;
+      if (req.body.size) toUpdate.no_of_wings = req.body.no_of_wings;
+
+      let result = await toUpdate.save();
+      console.log("Success " + result);
+      res.send(result);
+  } catch (err) {
+     
+      res.status(500).send(`{"error": "${err}": Update for id ${req.params.id} failed`);
+  }
 };
+
+
+
+
+
