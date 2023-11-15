@@ -87,8 +87,20 @@ exports.aeroplane_create_post = async function (req, res) {
   
 
 // Handle Costume delete on DELETE
-exports.aeroplane_delete = function(req, res) {
-  res.send('NOT IMPLEMENTED: Costume delete DELETE ' + req.params.id);
+exports.aeroplane_delete = async function(req, res) {
+  try {
+    const deletedAeroplane = await Aeroplane.findByIdAndDelete(req.params.id);
+    console.log("Delete" , req.params.id)
+    if (!deletedAeroplane ) {
+      // If no matching document found
+      res.status(404).json({ error: 'Aeroplane not found' });
+    } else {
+      res.json({ message: 'Aeroplane deleted successfully', deletedAeroplane });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'An error occurred while deleting the aeroplane.' });
+  }
 };
 
 // Handle Costume update on PUT
