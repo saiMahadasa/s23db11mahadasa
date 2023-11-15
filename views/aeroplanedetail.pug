@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    head
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    h1= title
+    - let aeroplaneid = toShow._id
+    - let aeroplane_type = toShow.aeroplane_type
+    - let aeroplanecolor = toShow.color
+    - let aeroplanewings = toShow.number_of_wings
+    div
+        div.row
+            div(class='aeroplaneAttr mr-3') Aeroplane ID is:
+                div #{aeroplaneid}
+        div.row
+            div(class='aeroplaneAttr mr-3') Aeroplane Type is:
+                div #{aeroplane_type}
+        div.row
+            div(class='aeroplaneAttr mr-3') Aeroplane Color is:
+                div #{aeroplanecolor}
+        div.row
+            div(class='aeroplaneAttr mr-3') Aeroplane Wings are:
+                div #{aeroplanewings}

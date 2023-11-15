@@ -15,7 +15,7 @@ router.get('/', api_controller.api);
 router.post('/aeroplane', aeroplane_controller.aeroplane_create_post);
 router.delete('/aeroplane/:id', aeroplane_controller.aeroplane_delete);
 router.put('/aeroplane/:id', aeroplane_controller.aeroplane_update_put);
-router.get('/aeroplane/:id', aeroplane_controller.aeroplane_detail);
+// router.get('/aeroplane/:id', aeroplane_controller.aeroplane_detail);
  router.get('/aeroplane', aeroplane_controller.aeroplane_list);
 //  router.post('/costumes', costume_controllers.costume_create_post);
 

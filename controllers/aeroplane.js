@@ -14,6 +14,32 @@ exports.aeroplane_list = async function (req, res) {
   }
 };
 
+// Handle a show one view with id specified by query
+exports.aeroplane_view_one_Page = async function(req, res) {
+  console.log("single view for id " + req.query.id)
+  try{
+   
+    
+  const result = await Aeroplane.findById(req.query.id)
+  res.render('aeroplanedetail',
+  { title: 'Aeroplane Detail', toShow: result });
+  // const aeroplane = await Aeroplane.findById(req.query.id);
+  // if (!aeroplane) {
+  //     console.log('Aeroplane not found with the given ID');
+  // } else {
+  //     console.log('Aeroplane found:', aeroplane);
+  // }
+
+  console.log(result);
+  }
+  
+  catch(err){
+  res.status(500)
+  res.send(`{'error': '${err}'}`);
+  }
+  };
+
+
 exports.aeroplane_view_all_Page = async function(req, res) {
     try{
     theAeroplane = await Aeroplane.find();
