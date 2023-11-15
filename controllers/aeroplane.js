@@ -14,23 +14,71 @@ exports.aeroplane_list = async function (req, res) {
   }
 };
 
+// exports.aeroplane_create_Page = function(req, res) {
+//   console.log("create view")
+//   try{
+//   res.render('aeroplanecreate', { title: 'Aeroplanes Create'});
+//   }
+//   catch(err){
+//   res.status(500)
+//   res.send(`{'error': '${err}'}`);
+//   }
+//   };
+
+exports.aeroplane_create_Page = function (req, res) {
+  console.log("create view");
+  res.render('aeroplanecreate', { title: 'Aeroplanes Create' });
+};
+
+exports.aeroplane_create = async function (req, res) {
+  try {
+    const { aeroplane_type, color, number_of_wings } = req.body;
+
+    // Create a new Aeroplane document
+    const aeroplane = new Aeroplane({
+      aeroplane_type,
+      color,
+      number_of_wings,
+    });
+
+    // Save the document to the database
+    await aeroplane.save();
+
+    res.status(201).json(aeroplane); // Respond with the created Aeroplane document
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+  exports.aeroplane_update_Page = async function(req, res) {
+    console.log("update view for item " + req.query.id);
+    try {
+        let result = await Aeroplane.findById(req.query.id);
+        
+        if (req.body.aeroplane_type) result.aeroplane_type = req.body.aeroplane_type;
+        if (req.body.color) result.color = req.body.color;
+        if (req.body.number_of_wings) result.number_of_wings = req.body.number_of_wings;
+
+        // Save the updated aeroplane data
+        let updatedAeroplane = await result.save();
+        console.log("Update success: ", updatedAeroplane);
+        res.render('aeroplaneupdate', { title: 'Aeroplane Update', toShow: updatedAeroplane });
+    } catch (err) {
+        res.status(500).send(`{'error': '${err}'}`);
+    }
+};
+  
+
 // Handle a show one view with id specified by query
 exports.aeroplane_view_one_Page = async function(req, res) {
-  console.log("single view for id " + req.query.id)
+ 
   try{
-   
-    
   const result = await Aeroplane.findById(req.query.id)
   res.render('aeroplanedetail',
   { title: 'Aeroplane Detail', toShow: result });
-  // const aeroplane = await Aeroplane.findById(req.query.id);
-  // if (!aeroplane) {
-  //     console.log('Aeroplane not found with the given ID');
-  // } else {
-  //     console.log('Aeroplane found:', aeroplane);
-  // }
 
-  console.log(result);
   }
   
   catch(err){
@@ -99,7 +147,7 @@ exports.aeroplane_create_post = async function (req, res) {
     const newCostume = new Aeroplane({
       aeroplane_type: req.body.aeroplane_type,
       color: req.body.color,
-      no_of_wings: req.body.no_of_wings,
+      number_of_wings: req.body.number_of_wings,
     });
   
     try {
@@ -129,30 +177,93 @@ exports.aeroplane_delete = async function(req, res) {
   }
 };
 
+exports.aeroplane_delete_Page = async function(req, res) {
+  console.log("Delete view for id " + req.query.id)
+  try{
+  result = await Aeroplane.findById(req.query.id)
+  res.render('aeroplanedelete', { title: 'Aeroplane Delete', toShow:
+ result });
+  }
+  catch(err){
+  res.status(500)
+  res.send(`{'error': '${err}'}`);
+  }
+ };
+
 // Handle Costume update on PUT
 // exports.aeroplane_update_put = function(req, res) {
 //   res.send('NOT IMPLEMENTED: Costume update PUT ' + req.params.id);
 // };
 
 // Handle Costume update form on PUT.
+// exports.aeroplane_update_put = async function(req, res) {
+//   console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
+
+//   try {
+//       // Retrieve the current state of the object using findById.
+//       let toUpdate = await Aeroplane.findById(req.params.id);
+//       if (req.body.aeroplane_type) toUpdate.aeroplane_type = req.body.aeroplane_type;
+//       if (req.body.cost) toUpdate.color = req.body.color;
+//       if (req.body.size) toUpdate.no_of_wings = req.body.no_of_wings;
+
+//       let result = await toUpdate.save();
+//       console.log("Success " + result);
+//       res.send(result);
+//   } catch (err) {
+     
+//       res.status(500).send(`{"error": "${err}": Update for id ${req.params.id} failed`);
+//   }
+// };
+
+// exports.aeroplane_update_put = async function (req, res) {
+//   console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
+
+//   try {
+//     // Retrieve the current state of the object using findById.
+//     let toUpdate = await Aeroplane.findById(req.params.id);
+//     if (!toUpdate) {
+//       return res.status(404).send(`Aeroplane with ID ${req.params.id} not found`);
+//     }
+
+//     if (req.body.aeroplane_type) toUpdate.aeroplane_type = req.body.aeroplane_type;
+//     if (req.body.color) toUpdate.color = req.body.color;
+//     if (req.body.no_of_wings) toUpdate.no_of_wings = req.body.no_of_wings;
+
+//     let result = await toUpdate.save();
+//     console.log("Success " + result);
+//     res.send(result);
+//   } catch (err) {
+//     res.status(500).send(`{"error": "${err}": Update for id ${req.params.id} failed`);
+//   }
+// };
+
+// Handle updating an aeroplane.
 exports.aeroplane_update_put = async function(req, res) {
   console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
 
   try {
-      // Retrieve the current state of the object using findById.
-      let toUpdate = await Aeroplane.findById(req.params.id);
-      if (req.body.aeroplane_type) toUpdate.aeroplane_type = req.body.aeroplane_type;
-      if (req.body.cost) toUpdate.color = req.body.color;
-      if (req.body.size) toUpdate.no_of_wings = req.body.no_of_wings;
+    // Retrieve the current state of the object using findById.
+    let toUpdate = await Aeroplane.findById(req.params.id);
+    if (!toUpdate) {
+      return res.status(404).json({ error: `Aeroplane with ID ${req.params.id} not found` });
+    }
 
-      let result = await toUpdate.save();
-      console.log("Success " + result);
-      res.send(result);
+    // Update aeroplane data based on the form submission
+    if (req.body.aeroplane_type) toUpdate.aeroplane_type = req.body.aeroplane_type;
+    if (req.body.color) toUpdate.color = req.body.color;
+    if (req.body.number_of_wings) toUpdate.number_of_wings = req.body.number_of_wings;
+
+    // Save the updated aeroplane data
+    let updatedAeroplane = await toUpdate.save();
+    console.log("Update success: ", updatedAeroplane);
+
+    // Respond with the updated aeroplane data in JSON format
+    res.json(updatedAeroplane);
   } catch (err) {
-     
-      res.status(500).send(`{"error": "${err}": Update for id ${req.params.id} failed`);
+    res.status(500).json({ error: `Update for id ${req.params.id} failed: ${err}` });
   }
 };
+
 
 
 
