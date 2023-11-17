@@ -2,7 +2,16 @@ extends layout
 
 block content
   h1= title
-  each aeroplane in results
-    .aeroplane
-      h2= aeroplane.aeroplane_type
-      p Color is: #{aeroplane.color}, wings are: #{aeroplane.number_of_wings}
+  - let items = results;
+  div(class="container-fluid")
+    div(class="row m-1")
+      each item in items
+        - let destination = `/aeroplane/update?id=${item._id}`
+        div(class="row-sm-2", class="m-1")
+          | Aeroplane :  #{item.aeroplane_type}(#{item.color})  #{item.no_of_wings}
+          button.btn.btn-primary.ml-1(onclick=`dispatch('${destination}')`) Update
+
+  script.
+    function dispatch(path) {
+      window.location.href = path;
+    }
