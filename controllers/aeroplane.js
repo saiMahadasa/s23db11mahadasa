@@ -91,6 +91,7 @@ exports.aeroplane_view_one_Page = async function(req, res) {
 exports.aeroplane_view_all_Page = async function(req, res) {
     try{
     theAeroplane = await Aeroplane.find();
+    console.log(theAeroplane)
     res.render('aeroplane', { title: 'Aeroplane Search Results', results: theAeroplane });
     }
     catch(err){
