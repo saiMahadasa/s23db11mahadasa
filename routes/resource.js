@@ -7,6 +7,12 @@ var router = express.Router();
 var api_controller = require('../controllers/api');
 var aeroplane_controller = require('../controllers/aeroplane');
 
+const secured = (req, res, next) => {
+    if (req.user){
+    return next();
+    }
+    res.redirect("/login");
+    }
 
 // API ROUTE
 router.get('/', api_controller.api);

@@ -5,11 +5,14 @@ block content
   - let items = results;
   div(class="container-fluid")
     div(class="row m-1")
+      a.btn.btn-success(href="/aeroplane/create") Create New
       each item in items
-        - let destination = `/aeroplane/update?id=${item._id}`
+        - let destinationUpdate = `/aeroplane/update?id=${item._id}`
+        - let destinationDetail = `/aeroplane/detail?id=${item._id}`
         div(class="row-sm-2", class="m-1")
-          | Aeroplane :  #{item.aeroplane_type}(#{item.color})  #{item.no_of_wings}
-          button.btn.btn-primary.ml-1(onclick=`dispatch('${destination}')`) Update
+          | Aeroplane: #{item.aeroplane_type}(#{item.color}) #{item.no_of_wings}
+          button.btn.btn-primary.ml-1(onclick=`dispatch('${destinationUpdate}')`) Update
+          button.btn.btn-info.ml-1(onclick=`dispatch('${destinationDetail}')`) View Details
 
   script.
     function dispatch(path) {
